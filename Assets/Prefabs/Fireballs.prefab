@@ -31,8 +31,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -1.63, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 8, y: 8, z: 8}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -146,15 +146,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40168525ccbcbf44e9d04da166d25a1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scoreValue: 10
-  earthDamage: 10
-  fallSpeed: 5
-  minEncapsulation: 3
-  canBeEncapsulated: 1
-  nullifiedEffect: {fileID: 0}
-  impactEffect: {fileID: 0}
-  detectionRadius: 1
-  detectionInterval: 0.75
-  snakeLayerMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
+  data: {fileID: 11400000, guid: 66fa1271e5b00fb43871505cf040046b, type: 2}
+  nullifiedEffect: {fileID: 130848, guid: d16221e794fe16e4e8994a7f8c770561, type: 3}
+  impactEffect: {fileID: 115286, guid: ec1c5863f61e8ff4a84dbdb8a282a7ac, type: 3}

@@ -1,8 +1,6 @@
 using UnityEngine;
 using UnityEngine.Pool;
 
-
-// Base fireball class that's open for extension, closed for modification
 public abstract class BaseFireball : MonoBehaviour, IFireball
 {
     [SerializeField] private FireballData data;
@@ -16,6 +14,11 @@ public abstract class BaseFireball : MonoBehaviour, IFireball
     protected Vector3 targetPosition;
     private float checkDelay = 0f;
 
+    private void OnEnable()
+    {
+        isNullified = false;
+    }
+
     protected virtual void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -24,7 +27,6 @@ public abstract class BaseFireball : MonoBehaviour, IFireball
             rb = gameObject.AddComponent<Rigidbody>();
         }
 
-        // Add bouncy physics material
         PhysicMaterial bouncyMaterial = new PhysicMaterial("Bouncy")
         {
             bounciness = 0.8f,
@@ -45,7 +47,6 @@ public abstract class BaseFireball : MonoBehaviour, IFireball
     {
         if (isNullified) return;
 
-        // Visual effect for impact
         CreateImpactEffect();
         pool.Release(gameObject);
     }
@@ -94,28 +95,33 @@ public abstract class BaseFireball : MonoBehaviour, IFireball
         }
     }
 
+
     private int surroundCount = 0;
+
     public void GetNearbySnakeSegments()
     {
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, data.detectionRadius, data.snakeLayerMask);
+        // reset first, so we count fresh this call
+        surroundCount = 0;
+
+        Collider[] hitColliders = Physics.OverlapSphere(
+            transform.position,
+            data.detectionRadius,
+            data.snakeLayerMask
+        );
 
         foreach (Collider collider in hitColliders)
         {
             if (collider.CompareTag("Segment"))
             {
-                if (collider.GetComponent<IEncapsulatable>().CheckEncapsulation(transform))
-                {
-                    surroundCount++;
-
-                    if (surroundCount >= data.minEncapsulation)
-                    {
-                        OnEncapsulated();
-                    }
-                }
+                surroundCount++;
             }
         }
 
-        surroundCount = 0;
+        // only trigger if threshold is met this frame
+        if (surroundCount >= data.minEncapsulation)
+        {
+            OnEncapsulated();
+        }
     }
 
     public abstract FireballType GetFireballType();

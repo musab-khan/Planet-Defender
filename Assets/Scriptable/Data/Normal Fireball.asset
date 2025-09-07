@@ -18,8 +18,8 @@ MonoBehaviour:
   fallSpeed: 20
   minEncapsulation: 3
   canBeEncapsulated: 1
-  detectionRadius: 1.2
-  detectionInterval: 0.5
+  detectionRadius: 3
+  detectionInterval: 0.2
   snakeLayerMask:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 65

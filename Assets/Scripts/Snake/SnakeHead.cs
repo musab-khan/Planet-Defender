@@ -9,8 +9,7 @@ public class Vector3Event : UnityEvent<Vector3> { }
 public class SnakeHead : MonoBehaviour
 {
     public float moveSpeed = 5f;
-    public float turnSpeed = 180f; // degrees per second
-
+    public float turnSpeed = 180f; 
     public GameObject segmentPrefab;
     public int initialSegments = 5;
     public float segmentSpacing = 0.5f;
@@ -23,9 +22,9 @@ public class SnakeHead : MonoBehaviour
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        rb.constraints = RigidbodyConstraints.FreezePositionZ   // stay in XY plane
+        rb.constraints = RigidbodyConstraints.FreezePositionZ   
                        | RigidbodyConstraints.FreezeRotationX
-                       | RigidbodyConstraints.FreezeRotationY;  // only rotate around Z
+                       | RigidbodyConstraints.FreezeRotationY;  
     }
 
     private void Start()
@@ -46,7 +45,6 @@ public class SnakeHead : MonoBehaviour
     {
         transform.position += transform.up * moveSpeed * Time.fixedDeltaTime;
 
-        // Rotation
         if (Mathf.Abs(turnInput) > 0.01f)
         {
             float rotation = -turnInput * turnSpeed * Time.fixedDeltaTime;
