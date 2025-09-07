@@ -10,8 +10,8 @@ public class SnakeSegment : IEncapsulatable
         throw new System.NotImplementedException();
     }
 
-    public bool CheckEncapsulation()
+    public bool CheckEncapsulation(Transform obj)
     {
-        
+        return true;
     }
 }

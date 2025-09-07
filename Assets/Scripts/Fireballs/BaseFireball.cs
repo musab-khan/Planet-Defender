@@ -94,7 +94,7 @@ public abstract class BaseFireball : MonoBehaviour, IFireball
         {
             if (collider.CompareTag("SnakeSegment"))
             {
-                if (collider.GetComponent<IEncapsulatable>().CheckEncapsulation())
+                if (collider.GetComponent<IEncapsulatable>().CheckEncapsulation(transform))
                 {
                     surroundCount++;
 
