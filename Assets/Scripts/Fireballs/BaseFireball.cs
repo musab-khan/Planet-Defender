@@ -1,26 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Pool;
+
 
 // Base fireball class that's open for extension, closed for modification
 public abstract class BaseFireball : MonoBehaviour, IFireball
 {
-    [Header("Fireball Settings")]
-    public int scoreValue = 10;
-    public int earthDamage = 10;
-    public float fallSpeed = 5f;
-    public int minEncapsulation = 3;
-    public bool canBeEncapsulated = true;
-    public GameObject nullifiedEffect;
-    public GameObject impactEffect;
+    [SerializeField] private FireballData data;
+    [SerializeField] private GameObject nullifiedEffect;
+    [SerializeField] private GameObject impactEffect;
 
-    [Header("Snake Detection Settings")]
-    public float detectionRadius = 3f;
-    public LayerMask snakeLayerMask = -1; // Which layers to check for snake parts
+    private IObjectPool<GameObject> pool;
 
     protected Rigidbody rb;
     protected bool isNullified = false;
     protected Vector3 targetPosition;
+    private float checkDelay = 0f;
 
     protected virtual void Awake()
     {
@@ -40,10 +34,11 @@ public abstract class BaseFireball : MonoBehaviour, IFireball
         GetComponent<Collider>().material = bouncyMaterial;
     }
 
-    public virtual void Initialize(Vector3 target)
+    public virtual void Initialize(Vector3 target, IObjectPool<GameObject> pool)
     {
+        this.pool = pool;
         targetPosition = target;
-        rb.velocity = transform.up * fallSpeed;
+        rb.velocity = transform.up * data.fallSpeed;
     }
 
     public virtual void OnEarthImpact()
@@ -52,8 +47,7 @@ public abstract class BaseFireball : MonoBehaviour, IFireball
 
         // Visual effect for impact
         CreateImpactEffect();
-
-        Destroy(gameObject);
+        pool.Release(gameObject);
     }
 
     private void OnEncapsulated()
@@ -62,19 +56,30 @@ public abstract class BaseFireball : MonoBehaviour, IFireball
 
         isNullified = true;
         CreateNullificationEffect();
-        Destroy(gameObject);
+
+        pool.Release(gameObject);
     }
 
-    public virtual int GetScore() => scoreValue;
+    private void Update()
+    {
+        checkDelay += Time.deltaTime;
+        if (checkDelay >= data.detectionInterval)
+        {
+            GetNearbySnakeSegments();
+            checkDelay = 0f;
+        }
+    }
+
+    public virtual int GetScore() => data.scoreValue;
 
     protected virtual void CreateImpactEffect()
     {
-       
+        data.particleSpawn.RaiseEvent(impactEffect, transform.position, Quaternion.identity);
     }
 
     protected virtual void CreateNullificationEffect()
     {
-        
+        data.particleSpawn.RaiseEvent(nullifiedEffect, transform.position, Quaternion.identity);
     }
 
     protected virtual void OnCollisionEnter(Collision collision)
@@ -82,23 +87,27 @@ public abstract class BaseFireball : MonoBehaviour, IFireball
         if (collision.gameObject.CompareTag("Earth"))
         {
             OnEarthImpact();
+            if (collision.gameObject.TryGetComponent<IDamageable>(out var damage))
+            {
+                damage.TakeDamage(data.earthDamage);
+            }
         }
     }
 
     private int surroundCount = 0;
     public void GetNearbySnakeSegments()
     {
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRadius, snakeLayerMask);
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, data.detectionRadius, data.snakeLayerMask);
 
         foreach (Collider collider in hitColliders)
         {
-            if (collider.CompareTag("SnakeSegment"))
+            if (collider.CompareTag("Segment"))
             {
                 if (collider.GetComponent<IEncapsulatable>().CheckEncapsulation(transform))
                 {
                     surroundCount++;
 
-                    if (surroundCount >= minEncapsulation)
+                    if (surroundCount >= data.minEncapsulation)
                     {
                         OnEncapsulated();
                     }

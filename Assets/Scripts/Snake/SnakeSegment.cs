@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SnakeSegment : IEncapsulatable
+public class SnakeSegment : MonoBehaviour, IEncapsulatable
 {
     [SerializeField] private float encapsulateRadius;
     public bool CanBeEncapsulate()
@@ -12,6 +12,13 @@ public class SnakeSegment : IEncapsulatable
 
     public bool CheckEncapsulation(Transform obj)
     {
-        return true;
+        if (Vector3.Distance(transform.position, obj.position) <= encapsulateRadius)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }

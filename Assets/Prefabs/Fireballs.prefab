@@ -13,9 +13,10 @@ GameObject:
   - component: {fileID: 7576612290089913377}
   - component: {fileID: 3422040357873927994}
   - component: {fileID: 3529945984906198885}
+  - component: {fileID: 441349186247091413}
   m_Layer: 0
-  m_Name: Segments
-  m_TagString: Segment
+  m_Name: Fireballs
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -114,7 +115,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3630799257030985192}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 500
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -133,3 +134,27 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 56
   m_CollisionDetection: 0
+--- !u!114 &441349186247091413
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3630799257030985192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40168525ccbcbf44e9d04da166d25a1e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scoreValue: 10
+  earthDamage: 10
+  fallSpeed: 5
+  minEncapsulation: 3
+  canBeEncapsulated: 1
+  nullifiedEffect: {fileID: 0}
+  impactEffect: {fileID: 0}
+  detectionRadius: 1
+  detectionInterval: 0.75
+  snakeLayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295

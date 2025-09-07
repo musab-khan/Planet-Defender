@@ -13,9 +13,10 @@ GameObject:
   - component: {fileID: 7576612290089913377}
   - component: {fileID: 3422040357873927994}
   - component: {fileID: 3529945984906198885}
-  m_Layer: 0
-  m_Name: Fireballs
-  m_TagString: Untagged
+  - component: {fileID: 7800425938093860538}
+  m_Layer: 6
+  m_Name: Segments
+  m_TagString: Segment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -114,7 +115,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3630799257030985192}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 100
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -133,3 +134,16 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 56
   m_CollisionDetection: 0
+--- !u!114 &7800425938093860538
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3630799257030985192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67ea74ea49d748e42a643f49b385ca85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  encapsulateRadius: 1

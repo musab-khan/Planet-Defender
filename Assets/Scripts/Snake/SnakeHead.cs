@@ -44,20 +44,18 @@ public class SnakeHead : MonoBehaviour
 
     private void MoveHead()
     {
-        // Move forward in local UP direction
-        Vector3 forward = transform.up;
-        rb.velocity = forward * moveSpeed;
+        transform.position += transform.up * moveSpeed * Time.fixedDeltaTime;
 
+        // Rotation
         if (Mathf.Abs(turnInput) > 0.01f)
         {
             float rotation = -turnInput * turnSpeed * Time.fixedDeltaTime;
-            rb.MoveRotation(rb.rotation * Quaternion.Euler(0, 0, rotation));
+            transform.Rotate(0, 0, rotation);
         }
     }
 
     private void MoveSegments()
     {
-        // Start from the 2nd node (first is head)
         var node = segments.First.Next;
 
         while (node != null)
@@ -73,7 +71,7 @@ public class SnakeHead : MonoBehaviour
                 segment.rotation = Quaternion.LookRotation(Vector3.forward, dir);
             }
 
-            node = node.Next; // move along the chain
+            node = node.Next;
         }
     }
 
